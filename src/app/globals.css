@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+:root {
+  --background: #FFFFFF;
+  --foreground: #1E293B;
+  --surface: #EEF4F9;
+  --primary: #9ABDDC;
+  --text: #1E293B;
+  --muted-text: rgba(30, 41, 59, 0.7);
+  --soft-border: rgba(154, 189, 220, 0.45);
+  --soft-border-strong: rgba(154, 189, 220, 0.55);
+  --row-hover: rgba(154, 189, 220, 0.10);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-primary: var(--primary);
+  --color-text: var(--text);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html.dark {
+  --background: #0F172A;
+  --foreground: #E2E8F0;
+  --surface: #1E293B;
+  --primary: #7EA9CF;
+  --text: #E2E8F0;
+  --muted-text: rgba(226, 232, 240, 0.75);
+  --soft-border: rgba(126, 169, 207, 0.45);
+  --soft-border-strong: rgba(126, 169, 207, 0.55);
+  --row-hover: rgba(126, 169, 207, 0.18);
+}
+
+body {
+  background: var(--background);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Custom Scrollbar for Glassmorphism UI */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(30, 41, 59, 0.18);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(30, 41, 59, 0.3);
+}

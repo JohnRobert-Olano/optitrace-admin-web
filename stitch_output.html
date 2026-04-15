@@ -1,0 +1,295 @@
+﻿import React from 'react';
+import { 
+  LayoutDashboard, 
+  ClipboardList, 
+  User, 
+  TrendingUp, 
+  Settings, 
+  LogOut,
+  Search,
+  Bell,
+  MoreHorizontal,
+  Eye,
+  Edit2
+} from 'lucide-react';
+import { motion } from 'framer-motion';
+import { 
+  AreaChart, 
+  Area, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer,
+  PieChart, 
+  Pie, 
+  Cell,
+  BarChart,
+  Bar
+} from 'recharts';
+
+// Mock Data
+const screeningData = [
+  { name: 'John Robert Ola├▒o', date: 'Apr 14, 2026 17:54', diagnosis: 'Cataract', status: 'Finalized' },
+  { name: 'Josann Ola├▒o', date: 'Apr 14, 2026 17:54', diagnosis: 'Cataract', status: 'Finalized' },
+  { name: 'Roseph Lentra', date: 'Apr 14, 2026 17:54', diagnosis: 'Conjunctivitis', status: 'Pending' },
+  { name: 'Josa Snasera', date: 'Apr 14, 2026 17:56', diagnosis: 'Normal', status: 'Finalized' },
+  { name: 'David Wiooler', date: 'Apr 14, 2026 17:53', diagnosis: 'Stye', status: 'Pending' },
+  { name: 'John Robert Ola├▒o', date: 'Apr 14, 2026 17:54', diagnosis: 'Cataract', status: 'Finalized' },
+];
+
+const diseaseData = [
+  { name: 'Cataract', value: 35, color: '#00D1FF' },
+  { name: 'Conjunctivitis', value: 25, color: '#FFB800' },
+  { name: 'Normal', value: 20, color: '#00F0FF' },
+  { name: 'Stye', value: 10, color: '#FF7A00' },
+  { name: 'Pterygium', value: 5, color: '#00D1FF' },
+  { name: 'Others', value: 5, color: '#82CA9D' },
+];
+
+const scanVolumeData = [
+  { name: 'Apr 08', volume: 60 },
+  { name: 'Apr 09', volume: 90 },
+  { name: 'Apr 10', volume: 80 },
+  { name: 'Apr 11', volume: 110 },
+  { name: 'Apr 12', volume: 70 },
+  { name: 'Apr 13', volume: 130 },
+  { name: 'Apr 14', volume: 85 },
+];
+
+const GlassCard = ({ children, className = "" }) => (
+  <motion.div 
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    className={`bg-[#1e293b]/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-2xl ${className}`}
+  >
+    {children}
+  </motion.div>
+);
+
+const SidebarItem = ({ icon: Icon, active = false }) => (
+  <div className={`p-3 rounded-xl cursor-pointer transition-all duration-300 ${active ? 'bg-white/10 text-cyan-400' : 'text-slate-400 hover:bg-white/5 hover:text-white'}`}>
+    <Icon size={24} />
+  </div>
+);
+
+const Dashboard = () => {
+  return (
+    <div className="min-h-screen bg-[#f1f5f9] flex p-6 gap-6 font-sans">
+      {/* Sidebar */}
+      <motion.aside 
+        initial={{ x: -100 }}
+        animate={{ x: 0 }}
+        className="w-20 bg-[#1e293b] rounded-3xl flex flex-col items-center py-8 justify-between shadow-xl"
+      >
+        <div className="flex flex-col gap-8 items-center">
+          <div className="w-10 h-10 bg-cyan-500 rounded-xl mb-4 flex items-center justify-center">
+            <TrendingUp className="text-white" size={24} />
+          </div>
+          <SidebarItem icon={LayoutDashboard} active />
+          <SidebarItem icon={ClipboardList} />
+          <SidebarItem icon={User} />
+          <SidebarItem icon={TrendingUp} />
+        </div>
+        <div className="flex flex-col gap-6 items-center">
+          <SidebarItem icon={Settings} />
+          <SidebarItem icon={LogOut} />
+        </div>
+      </motion.aside>
+
+      {/* Main Content */}
+      <main className="flex-1 flex flex-col gap-6 overflow-hidden">
+        {/* Top Header Section */}
+        <div className="flex gap-6 h-[240px]">
+          <GlassCard className="flex-1 flex flex-col justify-between overflow-hidden relative">
+            <div className="relative z-10">
+              <h1 className="text-3xl font-bold text-white mb-2">OptiTrace AI Command Center</h1>
+              <p className="text-slate-400 text-lg">Welcome back, Admin.</p>
+            </div>
+            
+            <div className="relative z-10 mt-8">
+              <div className="flex justify-between items-end mb-2">
+                <span className="text-slate-300">AI Accuracy Target</span>
+                <span className="text-4xl font-bold text-cyan-400 italic">69%</span>
+              </div>
+              <div className="w-full bg-slate-800 h-4 rounded-full overflow-hidden border border-white/5">
+                <motion.div 
+                  initial={{ width: 0 }}
+                  animate={{ width: '69%' }}
+                  transition={{ duration: 1.5, ease: "easeOut" }}
+                  className="h-full bg-gradient-to-r from-cyan-600 to-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.5)]"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-4 mt-8 gap-4 relative z-10">
+              {[
+                { label: 'TOTAL SCANS', value: '52' },
+                { label: 'ACTIVE DOCTORS', value: '5' },
+                { label: 'PENDING QUEUE', value: '0' },
+                { label: 'MATCH RATE', value: '69%' }
+              ].map((stat, i) => (
+                <div key={i}>
+                  <p className="text-xs text-slate-500 font-bold tracking-wider mb-1">{stat.label}</p>
+                  <p className="text-3xl font-bold text-white">{stat.value}</p>
+                </div>
+              ))}
+            </div>
+            
+            {/* Background Accent Gradient */}
+            <div className="absolute -top-24 -right-24 w-64 h-64 bg-cyan-500/10 blur-[100px] rounded-full" />
+          </GlassCard>
+
+          <GlassCard className="w-1/3 flex flex-col">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-white font-semibold">Disease Prevalence</h3>
+              <MoreHorizontal className="text-slate-400 cursor-pointer" size={20} />
+            </div>
+            <div className="flex-1 flex items-center">
+              <div className="w-1/2 h-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={diseaseData}
+                      innerRadius={50}
+                      outerRadius={70}
+                      paddingAngle={5}
+                      dataKey="value"
+                    >
+                      {diseaseData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip 
+                      contentStyle={{ backgroundColor: '#1e293b', border: 'none', borderRadius: '12px', color: '#fff' }}
+                      itemStyle={{ color: '#fff' }}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="w-1/2 flex flex-col gap-2 pl-4">
+                {diseaseData.map((item, i) => (
+                  <div key={i} className="flex items-center gap-2 text-xs">
+                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }} />
+                    <span className="text-slate-400 truncate">{item.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </GlassCard>
+        </div>
+
+        {/* Bottom Section */}
+        <div className="flex gap-6 flex-1 overflow-hidden">
+          <GlassCard className="flex-[1.5] flex flex-col overflow-hidden">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-white font-semibold">Recent Screenings</h3>
+              <div className="flex items-center gap-4">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
+                  <input 
+                    type="text" 
+                    placeholder="Search..." 
+                    className="bg-white/5 border border-white/10 rounded-lg py-1.5 pl-10 pr-4 text-sm text-white focus:outline-none focus:ring-1 focus:ring-cyan-500 w-48"
+                  />
+                </div>
+                <button className="text-xs text-cyan-400 hover:underline">View All ΓåÆ</button>
+              </div>
+            </div>
+            <div className="flex-1 overflow-auto custom-scrollbar">
+              <table className="w-full text-left text-sm">
+                <thead className="text-slate-500 sticky top-0 bg-[#1e293b]/90 backdrop-blur-md z-10 uppercase tracking-wider text-[10px] font-bold">
+                  <tr>
+                    <th className="pb-4 px-2">Name</th>
+                    <th className="pb-4 px-2">Date</th>
+                    <th className="pb-4 px-2">AI Diagnosis</th>
+                    <th className="pb-4 px-2 text-right">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="text-slate-300 divide-y divide-white/5">
+                  {screeningData.map((row, i) => (
+                    <tr key={i} className="group hover:bg-white/5 transition-colors">
+                      <td className="py-4 px-2 font-medium text-white">{row.name}</td>
+                      <td className="py-4 px-2 text-slate-400">{row.date}</td>
+                      <td className="py-4 px-2">{row.diagnosis}</td>
+                      <td className="py-4 px-2 text-right">
+                        <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-tight ${
+                          row.status === 'Finalized' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400'
+                        }`}>
+                          {row.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </GlassCard>
+
+          <div className="flex-1 flex flex-col gap-6">
+            <GlassCard className="flex-1 flex flex-col justify-center items-center text-center">
+              <h3 className="text-white font-semibold mb-2">Action Required</h3>
+              <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mb-4">
+                <ClipboardList className="text-slate-500" size={24} />
+              </div>
+              <p className="text-slate-400 text-sm">All caught up!</p>
+            </GlassCard>
+
+            <GlassCard className="flex-[1.5] flex flex-col">
+              <h3 className="text-white font-semibold mb-6">Scan Volume (Last 7 Days)</h3>
+              <div className="flex-1">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={scanVolumeData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" vertical={false} />
+                    <XAxis 
+                      dataKey="name" 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tick={{ fill: '#64748b', fontSize: 10 }}
+                      dy={10}
+                    />
+                    <YAxis hide />
+                    <Tooltip 
+                      cursor={{ fill: 'rgba(255,255,255,0.05)' }}
+                      contentStyle={{ backgroundColor: '#1e293b', border: 'none', borderRadius: '12px', color: '#fff' }}
+                    />
+                    <Bar 
+                      dataKey="volume" 
+                      fill="url(#colorBar)" 
+                      radius={[4, 4, 0, 0]} 
+                      barSize={12}
+                    />
+                    <defs>
+                      <linearGradient id="colorBar" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#22d3ee" />
+                        <stop offset="100%" stopColor="#0891b2" />
+                      </linearGradient>
+                    </defs>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </GlassCard>
+          </div>
+        </div>
+      </main>
+
+      <style jsx global>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(255, 255, 255, 0.2);
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default Dashboard;
